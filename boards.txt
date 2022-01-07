@@ -1,0 +1,52 @@
+# See: http://code.google.com/p/arduino/wiki/Platforms
+
+menu.cpu_frq=CPU Frequency
+#menu.cpu_variant=CPU
+menu.upload_speed=Upload Speed
+menu.erase=Erase Flash
+#menu.os_variant=OS
+
+##############################################################
+
+w806.name=w806_duino
+w806.upload.tool=serial_upload
+w806.upload.protocol=xmodem
+w806.upload.maximum_size=1048576
+w806.upload.maximum_data_size=294912
+w806.build.mcu=ck804ef
+w806.build.board=HLK_W806
+w806.build.core=w806
+w806.build.variant=w806
+w806.build.mcpu=ck804ef
+
+##############################################################
+# CPU Frequency
+w806.menu.cpu_frq.240MHZ=240MHZ
+w806.menu.cpu_frq.240MHZ.build.f_cpu=240
+w806.menu.cpu_frq.160MHZ=160MHZ
+w806.menu.cpu_frq.160MHZ.build.f_cpu=160
+w806.menu.cpu_frq.80MHZ=80MHZ
+w806.menu.cpu_frq.80MHZ.build.f_cpu=80
+w806.menu.cpu_frq.40MHZ=40MHZ
+w806.menu.cpu_frq.40MHZ.build.f_cpu=40
+w806.menu.cpu_frq.2MHZ=2MHZ
+w806.menu.cpu_frq.2MHZ.build.f_cpu=2
+
+# Upload Speed
+w806.menu.upload_speed.baud115200=115200
+w806.menu.upload_speed.baud115200.upload.speed=115200
+w806.menu.upload_speed.baud460800=460800
+w806.menu.upload_speed.baud460800.upload.speed=460800
+w806.menu.upload_speed.baud921600=921600
+w806.menu.upload_speed.baud921600.upload.speed=921600
+w806.menu.upload_speed.baud1000000=1000000
+w806.menu.upload_speed.baud1000000.upload.speed=1000000
+w806.menu.upload_speed.baud2000000=2000000
+w806.menu.upload_speed.baud2000000.upload.speed=2000000
+
+# Erase Flash
+w806.menu.erase.yes=erase all flash
+w806.menu.erase.yes.erase.flash=all
+w806.menu.erase.no=no erase
+w806.menu.erase.no.erase.flash=none
+##############################################################

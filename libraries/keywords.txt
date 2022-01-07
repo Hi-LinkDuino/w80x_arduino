@@ -1,0 +1,55 @@
+#######################################
+# Syntax Coloring Map For Ultrasound
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+digitalToggle	KEYWORD2
+sysClock	KEYWORD2
+sysClockPrescale	KEYWORD2
+sysClockOutput	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+E0		LITERAL1
+E1		LITERAL1
+E2		LITERAL1
+E3		LITERAL1
+E4		LITERAL1
+E5		LITERAL1
+E6		LITERAL1
+E7		LITERAL1
+B6		LITERAL1
+B7		LITERAL1
+C7		LITERAL1
+F0		LITERAL1
+F1		LITERAL1
+F2		LITERAL1
+F3		LITERAL1
+F4		LITERAL1
+F5		LITERAL1
+F6		LITERAL1
+F7		LITERAL1
+INT_OSC_32K	LITERAL1
+INT_OSC_32M	LITERAL1
+SYSCLK_DIV_0	LITERAL1
+SYSCLK_DIV_2	LITERAL1
+SYSCLK_DIV_4	LITERAL1
+SYSCLK_DIV_8	LITERAL1
+SYSCLK_DIV_16	LITERAL1
+SYSCLK_DIV_32	LITERAL1
+SYSCLK_DIV_64	LITERAL1
+SYSCLK_DIV_128	LITERAL1
+ADC10BIT	LITERAL1
+ADC12BIT	LITERAL1
+DEFAULT	LITERAL1
+EXTERNAL	LITERAL1
+INTERNAL1V024	LITERAL1
+INTERNAL2V048	LITERAL1
+INTERNAL4V096	LITERAL1

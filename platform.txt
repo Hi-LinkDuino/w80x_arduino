@@ -1,0 +1,129 @@
+
+# Arduino W806 Core and platform.
+# ------------------------------
+#
+# Part of the w806_duino project: https://github.com/nulllaborg/w806_duino 
+# For more info on this file:
+# https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
+
+name= W80x Boards
+version=0.1.0
+
+#runtime.tools.csky.path={runtime.hardware.path}/tools/csky-abiv2-elf-toolchain
+#runtime.tools.w80x_tool.path={runtime.hardware.path}/tools/w80x_tool
+
+compiler.warning_flags=-w
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall
+compiler.warning_flags.all=-Wall -Wextra
+
+# Default "compiler.path" is correct, change only if you want to override the initial value
+compiler.path={runtime.tools.csky.path}/bin/
+compiler.wrapper.path={runtime.tools.w80x_tool.path}/wrapper
+compiler.wrapper.path.windows={runtime.tools.w80x_tool.path}/win/busybox" ash "{runtime.tools.w80x_tool.path}/wrapper
+compiler.c.cmd=csky-elfabiv2-gcc
+compiler.c.flags=-mhard-float -DGCC_COMPILE=1 -O2 -g3 -Wall -ffunction-sections -fdata-sections -c
+
+compiler.c.elf.flags=-Wl,--gc-sections -Wl,-zmax-page-size=1024 -Wl,--whole-archive
+compiler.c.elf.cmd=csky-elfabiv2-gcc
+
+compiler.S.flags=-mhard-float -Wa,--gdwarf2
+
+compiler.cpp.cmd=csky-elfabiv2-g++
+compiler.cpp.flags=-mhard-float -DGCC_COMPILE=1 -O2 -g3 -Wall -ffunction-sections -fdata-sections -c
+
+compiler.ar.cmd=csky-elfabiv2-gcc-ar
+compiler.ar.flags=ru
+
+compiler.objcopy.cmd=csky-elfabiv2-objcopy
+compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
+
+compiler.elf2bin.flags=-O binary
+compiler.elf2bin.cmd=csky-elfabiv2-objcopy
+compiler.ldflags=-lm -Wl,-T{build.core.path}/ld/gcc_csky.ld
+compiler.size.cmd=csky-elfabiv2-size
+
+# This can be overridden in boards.txt
+build.extra_flags=
+
+# These can be overridden in platform.local.txt
+compiler.c.extra_flags=
+compiler.c.elf.extra_flags=-Wl,--no-whole-archive -nostartfiles -mhard-float
+#compiler.S.extra_flags=-I{runtime.tools.csky.path}/csky-elfabiv2/include/csi/csi_core/csi_cdk/ -ID:/C-Sky/CDK/CSKY/csi/csi_core/include/ -ID:/C-Sky/CDK/CSKY/csi/csi_driver/include/
+compiler.S.extra_flags=
+compiler.cpp.extra_flags=
+compiler.ar.extra_flags=
+compiler.objcopy.eep.extra_flags=
+compiler.elf2bin.extra_flags=
+compiler.includes="-I{runtime.tools.csky.path}/csky-elfabiv2/include" "-I{build.core.path}/include" "-I{build.core.path}/include/arch/{build.arch}" "-I{build.core.path}/include/arch/{build.arch}/csi_dsp" "-I{build.core.path}/include/arch/{build.arch}/csi_core" "-I{build.core.path}/include/driver" 
+compiler.libs={build.core.path}/lib/libdsp.a {build.core.path}/lib/arch/{build.arch}/bsp/startup.o {build.core.path}/lib/arch/{build.arch}/bsp/__rt_entry.o {build.core.path}/lib/arch/{build.arch}/bsp/vectors.o
+
+# Build image
+img_type=1
+run_img_header=8010000
+run_img_pos=8010400
+upd_img_pos=8010000
+
+sec_img_header=8002000
+sec_img_pos=8002400
+
+build.tools.path.windows={runtime.tools.w80x_tool.path}/win/
+
+# w806 compile patterns
+# --------------------
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.c.extra_flags} {build.extra_flags} {compiler.includes} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.includes} {build.extra_flags} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
+
+## Compile S files
+recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.S.flags} -MMD -MP -MT"{object_file}" -MF"{object_file}.d" -o "{object_file}" {compiler.S.extra_flags} {build.extra_flags} {compiler.includes} {includes}
+
+## Create archives
+# archive_file_path is needed for backwards compatibility with IDE 1.6.5 or older, IDE 1.6.6 or newer overrides this value
+archive_file_path={build.path}/{archive_file}
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
+
+## Combine gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {object_files} {compiler.libs} {archive_file_path} {compiler.c.elf.extra_flags} -mcpu={build.mcpu} {compiler.ldflags} -Wl,--ckmap={build.path}/{build.project_name}.map -o "{build.path}/{build.project_name}.elf"
+#recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {object_files} {archive_file_path} {build.core.path}/lib/libdsp.a {compiler.c.elf.extra_flags} -mcpu={build.mcpu} {compiler.ldflags} -Wl,--ckmap={build.path}/{build.project_name}.map -o "{build.path}/{build.project_name}.elf"
+
+## Create output files (.elf and .bin)
+recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2bin.cmd}" {compiler.elf2bin.flags} {compiler.elf2bin.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+#recipe.objcopy.eep.pattern="{runtime.tools.w80x_tool.path}/wm_tool.exe" -b {build.path}/{build.project_name}.bin -o {build.path}/{build.project_name} -it {img_type} -fc 0 -ra {run_img_pos} -ih {run_img_header} -ua {upd_img_pos} -nh 0  -un 0
+#recipe.objcopy.img.pattern="{runtime.tools.w80x_tool.path}/wm_tool.exe" -b {build.tools.path}/W806_secboot.bin -o {build.path}/{build.project_name}_secboot -it 0 -fc 0 -ra {sec_img_pos} -ih {sec_img_header} -ua {upd_img_pos} -nh {run_img_header} -un 0 & type "{build.path}\{build.project_name}_secboot.img" {build.path}\{build.project_name}.img > {build.path}\{build.project_name}.fls
+recipe.objcopy.fls.pattern="{build.tools.path}/build" "{build.tools.path}/wm_tool.exe" {build.path}\{build.project_name} {build.tools.path}\W806_secboot.bin
+
+## Save bin
+recipe.output.tmp_file={build.project_name}.bin
+recipe.output.save_file={build.project_name}.{build.variant}.bin
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
+recipe.size.regex=^(?:\.text|\.data|\.bootloader)\s+([0-9]+).*
+recipe.size.regex.data=^(?:\.data|\.bss|\.noinit)\s+([0-9]+).*
+recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
+
+## Preprocessor
+preproc.includes.flags=-w -x c++ -M -MG -MP
+recipe.preproc.includes="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.includes.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {build.extra_flags} {compiler.libs.c.flags} {includes} "{source_file}"
+
+#preproc.macros.flags=-w -x c++ -E -CC
+preproc.macros.flags=
+recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.macros.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.libs.c.flags} {build.extra_flags} {includes} "{source_file}" -o "{preprocessed_file_path}"
+
+# W806 Uploader tools
+# ------------------------------
+
+tools.serial_upload.path={runtime.tools.w80x_tool.path}/win/
+tools.serial_upload.cmd.path={path}/wm_tool.exe
+
+tools.serial_upload.upload.params.verbose=-c
+tools.serial_upload.upload.params.quiet=-q -q
+# tools.avrdude.upload.verify is needed for backwards compatibility with IDE 1.6.8 or older, IDE 1.6.9 or newer overrides this value
+tools.serial_upload.upload.verify=
+tools.serial_upload.upload.params.noverify=-V
+tools.serial_upload.upload.pattern="{cmd.path}" {upload.params.verbose} {serial.port} -ws 115200 -ds {upload.speed} -dl "{build.path}/{build.project_name}.fls"
