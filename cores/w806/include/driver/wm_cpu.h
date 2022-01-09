@@ -23,11 +23,11 @@ extern "C" {
 #define IS_NVIC_DEVICE_IRQ(IRQ)                ((IRQ) >= (IRQn_Type)0x00U)
 
 enum CPU_CLK{
-	CPU_CLK_240M = 2,
-	CPU_CLK_160M = 3,
-	CPU_CLK_80M  = 6,
-	CPU_CLK_40M  = 12,
-	CPU_CLK_2M   = 240,		
+    CPU_CLK_240M = 2,
+    CPU_CLK_160M = 3,
+    CPU_CLK_80M  = 6,
+    CPU_CLK_40M  = 12,
+    CPU_CLK_2M   = 240,
 };
 
 typedef union {
