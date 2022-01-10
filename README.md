@@ -56,7 +56,7 @@ w806为[联盛德](http://www.winnermicro.com/)公司推出一款基于平头哥
 ## w80x_duino开发计划
 打勾的代表已经实现并验证，没有打勾的代表正在开发中，期待更多开发者一起维护
 
-- [x] [支持arduino ide开发基于w806的官方SDK API调用开发]()
+- [x] [支持arduino ide开发基于w806的官方SDK API调用开发](https://github.com/Hi-LinkDuino/w80x_arduino/tree/v0.0.1)
 - [ ] [GPIO适配]()
 - [ ] [Serial适配]()
 - [ ] [ADC适配]()
@@ -72,5 +72,5 @@ w806为[联盛德](http://www.winnermicro.com/)公司推出一款基于平头哥
 欢迎开发者协同开发提交commit，本项目会持续更新。
 
 ## 致谢
-- Hi-LINK海联科开发生产了此开发板
-- 此开源项目由[nulllab空想实验室](https://github.com/nulllaborg/)团队维护，并得到联盛德官方捐赠
+- Hi-Link海凌科开发生产了此开发板
+- 此开源项目由[nulllab空想实验室](https://github.com/nulllaborg)团队维护，并得到联盛德官方捐赠
