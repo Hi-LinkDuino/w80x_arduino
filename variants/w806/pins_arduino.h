@@ -23,6 +23,54 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
+#define PA0 0
+#define PA1 1
+#define PA2 2
+#define PA3 3
+#define PA4 4
+#define PA5 5
+#define PA6 6
+#define PA7 7
+#define PA8 8
+#define PA9 9
+#define PA10 10
+#define PA11 11
+#define PA12 12
+#define PA13 13
+#define PA14 14
+#define PA15 15
+
+#define PB0 16
+#define PB1 17
+#define PB2 18
+#define PB3 19
+#define PB4 20
+#define PB5 21
+#define PB6 22
+#define PB7 23
+#define PB8 24
+#define PB9 25
+#define PB10 26
+#define PB11 27
+#define PB12 28
+#define PB13 29
+#define PB14 30
+#define PB15 31
+#define PB16 32
+#define PB17 33
+#define PB18 34
+#define PB19 35
+#define PB20 36
+#define PB21 37
+#define PB22 38
+#define PB23 39
+#define PB24 40
+#define PB25 41
+#define PB26 42
+
+//#define PA##n (n)
+//#define PB##n (16+n)
+
 /*
 #ifndef _BV
 #define _BV(X) (1<<(X))
@@ -50,7 +98,7 @@ __code uint8_t digital_pin_to_pwm_PGM[] = {
     NOT_ON_PWM,
     NOT_ON_PWM,	//not exist
     NOT_ON_PWM, //not exist
-	
+
     NOT_ON_PWM, //PIN20
     NOT_ON_PWM,
     NOT_ON_PWM,
@@ -75,49 +123,51 @@ __code uint8_t digital_pin_to_pwm_PGM[] = {
 };
 
 __code uint8_t PROGMEM digital_pin_to_port_PGM[] = {
-    P0PORT, //PIN00
-    P0PORT,
-    P0PORT,
-    P0PORT,
-    P0PORT,
-    P0PORT,
-    P0PORT,
-    P0PORT,
-    NOT_A_PORT,	//not exist
-    NOT_A_PORT, //not exist
-	
-    P1PORT, //PIN10
-    P1PORT,
-    P1PORT,
-    P1PORT,
-    P1PORT,
-    P1PORT,
-    P1PORT,
-    P1PORT,
-    NOT_A_PORT,	//not exist
-    NOT_A_PORT, //not exist
-	
-    P2PORT, //PIN20
-    P2PORT,
-    P2PORT,
-    P2PORT,
-    P2PORT,
-    P2PORT,
-    P2PORT,
-    P2PORT,
-    NOT_A_PORT,	//not exist
-    NOT_A_PORT, //not exist
-	
-    P3PORT, //PIN30
-    P3PORT,
-    P3PORT,
-    P3PORT,
-    P3PORT,
-    P3PORT,
-    P3PORT,
-    P3PORT,
-    NOT_A_PORT,	//not exist
-    NOT_A_PORT, //not exist
+    GPIOA, //PA0
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA,
+    GPIOA, //PA15
+
+    GPIOB, //PB0
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB, //PB15
+    GPIOB, //PB16
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB,
+    GPIOB, //PB26
+    GPIOB, //PB27
 };
 
 __code uint8_t digital_pin_to_bit_mask_PGM[] = {

@@ -17,6 +17,8 @@
 __IO uint32_t uwTick;
 uint32_t uwTickPrio;
 static HAL_TickFreqTypeDef uwTickFreq = HAL_TICK_FREQ_DEFAULT;  /* 1KHz */
+#define US_TICKS  F_CPU/1000000U
+
 /**
  * @brief          This function is used to set cpu clock
  *
@@ -106,6 +108,16 @@ __attribute__((weak)) void HAL_IncTick(void)
 __attribute__((weak)) uint32_t HAL_GetTick(void)
 {
 	return uwTick;
+}
+
+__attribute__((weak)) uint32_t HAL_Get_Micros(void)
+{
+    register uint32_t ms, cycle_cnt;
+    do {
+        ms = uwTick;
+        cycle_cnt = csi_coret_get_value();
+    } while (ms != uwTick);
+    return (ms * 1000) + (1000 - cycle_cnt/US_TICKS);
 }
 
 __attribute__((weak)) void HAL_Delay(uint32_t Delay)

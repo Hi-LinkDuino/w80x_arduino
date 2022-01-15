@@ -19,6 +19,8 @@ int main(void)
 #endif
 
     SystemClock_Config(f_cpu_dir);
+    init();
+
     setup();
     
     for (;;) {

@@ -54,7 +54,8 @@ void yield(void);
 #define INPUT 0x0
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
-#define	OUTPUT_OD 0x03
+#define OUTPUT_OD 0x03
+#define INPUT_PULLDOWN 0x4
 
 // undefine mathlib's pi if encountered
 #ifdef PI
@@ -149,15 +150,20 @@ void init(void);
 //void serialEvent(void);		// weak
 //extern unsigned char runSerialEvent;
 
-//void pinMode(uint8_t pin, __xdata uint8_t mode);
-//void digitalWrite(uint8_t pin, __xdata uint8_t val);
+void pinMode(uint8_t pin, uint8_t mode);
+void digitalWrite(uint8_t pin, uint8_t val);
+
 uint8_t digitalRead(uint8_t pin);
 //void analogWrite(uint8_t pin, __xdata uint16_t val);
 
 //uint32_t millis(void);
 //uint32_t micros(void);
 //void delay(uint32_t ms);
-//void delayMicroseconds(uint16_t us);
+#define millis HAL_GetTick
+#define micros HAL_Get_Micros
+#define delay(ms) HAL_Delay(ms)
+
+void delayMicroseconds(uint32_t us);
 //unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 //unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 

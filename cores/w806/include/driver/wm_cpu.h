@@ -65,6 +65,7 @@ void SystemClock_Get(wm_sys_clk *sysclk);
 
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority);
 void HAL_IncTick(void);
+uint32_t HAL_Get_Micros(void);
 uint32_t HAL_GetTick(void);
 void HAL_Delay(uint32_t Delay);
 
