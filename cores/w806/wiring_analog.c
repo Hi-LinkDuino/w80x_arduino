@@ -24,92 +24,131 @@
   $Id: wiring.c 248 2007-02-03 15:36:30Z mellis $
 */
 
-//#include "wiring_private.h"
 #include "pins_arduino.h"
 #include "./include/driver/wm_adc.h"
 
-#if 0
-// int analogRead(uint8_t);
-// void analogReference(uint8_t mode);
-// void analogWrite(uint8_t, uint16_t);
-// void analogReadResolution(uint8_t);
-
-typedef enum{
+typedef enum
+{
     ADC_UNINT = 0,
     ADC_INIT
-};
+} adcChannelStateTypeDef;
 
-
-typedef struct{
-    uint8_t pin;
-    uint8_t pin_state;
+typedef struct
+{
+    uint8_t ch;
+    uint8_t ch_state;
     ADC_HandleTypeDef hadc;
-}adcPinStateTypeDef;
+} adcPinStateTypeDef;
 
+adcPinStateTypeDef adcPinState[5] = {0};
+ADC_HandleTypeDef hadc1;
 
-static adcPinStateTypeDef adcPinState[4] = {0};
-
-// static char *adc_pin_mode(uint8_t pin)
-// {
-
-
-// }
 void Error_Handler(void);
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
+
+const uint32_t channel[] = {
+    ADC_ANA_CR_CH_0,
+    ADC_ANA_CR_CH_3,
+    ADC_ANA_CR_CH_2,
+    ADC_ANA_CR_CH_1};
+
 int analogRead(uint8_t pin)
 {
-    int val = 0;
-    // if((pin >= PA1) && (pin <= PA4))                /*TODO IOæ ¡éªŒå’Œä¼ é€’*/       
-    // {
-    //     if(adcPinState[pin].pin_state == ADC_UNINT)         /*This pin is not in adc mode,init first*/
-    //     {
-    //         adcPinState[pin].hadc.Instance = ADC;
-    //         adcPinState[pin].hadc.Init.channel = (pin << ADC_ANA_CR_CH_Pos);
-    //         adcPinState[pin].hadc.Init.freq = 1000;   
-    //         HAL_ADC_Init(&adcPinState[pin].hadc);
-
-    //         adcPinState[pin].pin_state = ADC_INIT;
-    //     }
-
-    //     val =  HAL_ADC_GET_INPUT_VOLTAGE(&adcPinState[pin].hadc);
-    // }
-    static char flag = 0;
-    static ADC_HandleTypeDef hadc;
-    if(!flag)
+    uint32_t val = 0;
+    uint8_t ch = 0;
+    if ((pin >= PA1) && (pin <= PA4)) /*TODO IOÐ£ÑéºÍ´«µÝ*/
     {
-        flag = 1;
-	hadc.Instance = ADC;
-	hadc.Init.channel = ADC_CHANNEL_0;
-	hadc.Init.freq = 1000;
-	if (HAL_ADC_Init(&hadc) != HAL_OK)
-	{
-    
-		Error_Handler();
-	}
-        // if (HAL_ADC_Init(&hadc) != HAL_OK)
-        // {
-        //     Error_Handler();
-        // }
-    }
-    
-   // val =  HAL_ADC_GET_INPUT_VOLTAGE(&hadc);
+        ch = pin - 1;
+        adcPinState->ch = ch;
+        if (adcPinState[ch].ch_state == ADC_UNINT) /*This pin is not in adc mode,init first*/
+        {
+            printf("pin [%d] init \r\n", pin);
+            adcPinState[ch].ch_state = ADC_INIT;
+            adcPinState[ch].hadc.Instance = ADC;
+            adcPinState[ch].hadc.Init.channel = channel[ch];
+            adcPinState[ch].hadc.Init.freq = 1000;
+            HAL_ADC_Init(&(adcPinState[ch].hadc));
+        }
 
+        val = HAL_ADC_GET_INPUT_VOLTAGE(&adcPinState[ch].hadc);
+    }
 
     return val;
 }
 
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-    
 }
 
 void Error_Handler(void)
 {
-    
-	while (1)
-	{
-    
-	}
+    while (1)
+    {
+    }
 }
 
-#endif
+__attribute__((isr)) void ADC_IRQHandler(void)
+{
+    uint8_t i = 0;
+
+    for (i = 0; i < 4; i++)
+    {
+        if (adcPinState[i].ch_state == ADC_INIT)
+        {
+            HAL_ADC_IRQHandler(&adcPinState[i].hadc);
+        }
+    }
+}
+
+void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
+{
+    if (hadc->Instance == ADC)
+    {
+        __HAL_RCC_ADC_CLK_ENABLE();
+        __HAL_RCC_GPIO_CLK_ENABLE();
+
+        //ADC_CHANNEL_0 : PA1
+        //ADC_CHANNEL_1 : PA4
+        //ADC_CHANNEL_2 : PA3
+        //ADC_CHANNEL_3 : PA2
+        //ADC_CHANNEL_0_1 : PA1 and PA4
+        //ADC_CHANNEL_2_3 : PA3 and PA2
+        if (hadc->Init.channel == ADC_CHANNEL_0)
+        {
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_1);
+        }
+        else if (hadc->Init.channel == ADC_CHANNEL_1)
+        {
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_4);
+        }
+        else if (hadc->Init.channel == ADC_CHANNEL_2)
+        {
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_3);
+        }
+        else if (hadc->Init.channel == ADC_CHANNEL_3)
+        {
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_2);
+        }
+        else if (hadc->Init.channel == ADC_CHANNEL_0_1)
+        {
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_1);
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_4);
+        }
+        else if (hadc->Init.channel == ADC_CHANNEL_2_3)
+        {
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_3);
+            __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_2);
+        }
+
+        // Èç¹ûÓÃµ½ÖÐ¶Ï·½Ê½ÐèÒªÊ¹ÄÜÖÐ¶Ï
+        HAL_NVIC_SetPriority(ADC_IRQn, 0);
+        HAL_NVIC_EnableIRQ(ADC_IRQn);
+    }
+}
+
+void HAL_ADC_MspDeInit(ADC_HandleTypeDef *hadc)
+{
+    __HAL_RCC_ADC_CLK_DISABLE();
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1);
+    HAL_NVIC_DisableIRQ(ADC_IRQn);
+}
