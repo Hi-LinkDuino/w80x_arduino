@@ -28,8 +28,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "pins_arduino.h"
-#include "./include/driver/wm_hal.h"
 
+#include "./include/driver/wm_adc.h"
 
 #ifdef __cplusplus 
 extern "C" {
@@ -154,6 +154,8 @@ void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
 
 uint8_t digitalRead(uint8_t pin);
+int analogRead(uint8_t pin);
+void analogReference(uint32_t val);
 //void analogWrite(uint8_t pin, __xdata uint16_t val);
 
 //uint32_t millis(void);
