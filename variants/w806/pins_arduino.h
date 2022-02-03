@@ -23,6 +23,11 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
+#include "variant.h"
+
+#define PIOA ((GPIO_TypeDef *)GPIOA_BASE)
+#define PIOB ((GPIO_TypeDef *)GPIOB_BASE)
+
 #define PA0 0
 #define PA1 1
 #define PA2 2
@@ -68,6 +73,10 @@
 #define PB25 41
 #define PB26 42
 
+#define ADC1 PA1
+#define ADC2 PA4
+#define ADC3 PA3
+#define ADC4 PA2
 //#define PA##n (n)
 //#define PB##n (16+n)
 
