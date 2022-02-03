@@ -156,8 +156,7 @@ void digitalWrite(uint8_t pin, uint8_t val);
 uint8_t digitalRead(uint8_t pin);
 int analogRead(uint8_t pin);
 void analogReference(uint32_t val);
-//void analogWrite(uint8_t pin, __xdata uint16_t val);
-
+void analogWrite(uint32_t pin, uint32_t val); 
 //uint32_t millis(void);
 //uint32_t micros(void);
 //void delay(uint32_t ms);
