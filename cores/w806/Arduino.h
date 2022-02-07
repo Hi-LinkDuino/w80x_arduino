@@ -154,7 +154,7 @@ void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
 
 uint8_t digitalRead(uint8_t pin);
-//void analogWrite(uint8_t pin, __xdata uint16_t val);
+int analogRead(uint8_t pin);
 
 //uint32_t millis(void);
 //uint32_t micros(void);
