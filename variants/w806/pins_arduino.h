@@ -73,10 +73,10 @@
 #define PB25 41
 #define PB26 42
 
-#define ADC1 PA1
-#define ADC2 PA4
-#define ADC3 PA3
-#define ADC4 PA2
+#define A0 PA1
+#define A1 PA4
+#define A2 PA3
+#define A3 PA2
 //#define PA##n (n)
 //#define PB##n (16+n)
 
