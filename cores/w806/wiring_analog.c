@@ -33,6 +33,7 @@
 #define ADC_MODE ADC_NORMAL /*using polling mode */
 #define ADC_DEFAULT_OFFSET 176859
 #define ADC_MAX_VAL 270000
+int adcResolution = ADC8BIT;
 
 typedef struct
 {
@@ -60,6 +61,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
 //         adcPinState[ch].hadc.offset = val;
 //     }
 // }
+void analogReadResolution(uint8_t res)
+{
+    adcResolution = res;
+}
 
 int analogRead(uint8_t pin) /*all ADC channel range is 0-2.4V*/
 {
@@ -100,7 +105,7 @@ int analogRead(uint8_t pin) /*all ADC channel range is 0-2.4V*/
 #endif
     }
 
-    return val;
+    return val&adcResolution;
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
@@ -169,7 +174,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
             __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_2);
         }
 #if (ADC_MODE == ADC_IT)
-        // »Áπ˚”√µΩ÷–∂œ∑Ω Ω–Ë“™ πƒ‹÷–∂œ
+        // Â¶ÇÊûúÁî®Âà∞‰∏≠Êñ≠ÊñπÂºèÈúÄË¶Å‰ΩøËÉΩ‰∏≠Êñ≠
         HAL_NVIC_SetPriority(ADC_IRQn, 0);
         HAL_NVIC_EnableIRQ(ADC_IRQn);
 #endif
