@@ -43,7 +43,17 @@ typedef struct
     ADC_HandleTypeDef hadc;
 } adcPinStateTypeDef;
 
+typedef struct
+{
+    uint8_t ch;
+    uint8_t pin;
+
+    PWM_HandleTypeDef hpwm;
+} pwmPinStateTypeDef;
+
 adcPinStateTypeDef adcPinState[ADC_COUNT] = {0};
+
+pwmPinStateTypeDef pwmPinState[PWM_COUNT] = {0};
 
 void Error_Handler(void);
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
@@ -105,7 +115,7 @@ int analogRead(uint8_t pin) /*all ADC channel range is 0-2.4V*/
 #endif
     }
 
-    return val&adcResolution;
+    return val & adcResolution;
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
@@ -200,4 +210,94 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef *hadc)
 #if (ADC_MODE == ADC_IT)
     HAL_NVIC_DisableIRQ(ADC_IRQn);
 #endif
+}
+
+void analogWrite(uint32_t pin, uint32_t val)
+{
+    uint8_t channel_index = 0;
+    if (g_APinDescription[pin].ulPinAttribute & PIN_ATTR_PWM) /*this pin has pwm attr*/
+    {
+        printf("init pin {%d}\r\n", pin);
+        channel_index = (uint16_t)g_APinDescription[pin].ulPWMChannel;
+        if (g_pinStatus[pin] != PIN_ATTR_PWM) /*need init this pin first*/
+        {
+
+            g_pinStatus[pin] = PIN_ATTR_PWM;
+
+            pwmPinState[channel_index].pin = pin;
+            pwmPinState[channel_index].hpwm.Instance = PWM;
+            pwmPinState[channel_index].hpwm.Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
+            pwmPinState[channel_index].hpwm.Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
+
+            pwmPinState[channel_index].hpwm.Init.Prescaler = 312;                    //40M / 312 = 12.8K						//分频 1M
+            pwmPinState[channel_index].hpwm.Init.Period = 255;                       // 12.8K / 256 = 500HZ
+            pwmPinState[channel_index].hpwm.Init.Pulse = 100;                        // (100/256)% DUTY
+            pwmPinState[channel_index].hpwm.Init.OutMode = PWM_OUT_MODE_INDEPENDENT; //通道独立输出
+
+            pwmPinState[channel_index].hpwm.Channel = channel_index;
+            HAL_PWM_Init(&(pwmPinState[channel_index].hpwm));
+            HAL_PWM_Start(&(pwmPinState[channel_index].hpwm), channel_index);
+        }
+        HAL_PWM_Duty_Set(&(pwmPinState[channel_index].hpwm), channel_index, val);
+    }
+    else /*this pin is not pwm pin*/
+    {
+        ;
+        ;
+        ;
+    }
+}
+
+void HAL_PWM_MspInit(PWM_HandleTypeDef *hpwm)
+{
+    for (int i = 0; i < PWM_COUNT; i++)
+    {
+        if (hpwm->Channel == pwmPinState[i].hpwm.Channel)
+        {
+            if (g_pinStatus[pwmPinState[i].pin] == PIN_ATTR_PWM)
+            {
+                __HAL_RCC_PWM_CLK_ENABLE();
+
+                if (hpwm->Channel == PWM_CH0)
+                {
+                    __HAL_AFIO_REMAP_PWM0(g_APinDescription[pwmPinState[i].pin].pPort, g_APinDescription[pwmPinState[i].pin].ulPin);
+                }
+                else if (hpwm->Channel == PWM_CH1)
+                {
+                    __HAL_AFIO_REMAP_PWM1(g_APinDescription[pwmPinState[i].pin].pPort, g_APinDescription[pwmPinState[i].pin].ulPin);
+                }
+                else if (hpwm->Channel == PWM_CH2)
+                {
+                    __HAL_AFIO_REMAP_PWM2(g_APinDescription[pwmPinState[i].pin].pPort, g_APinDescription[pwmPinState[i].pin].ulPin);
+                }
+                else if (hpwm->Channel == PWM_CH3)
+                {
+                    __HAL_AFIO_REMAP_PWM3(g_APinDescription[pwmPinState[i].pin].pPort, g_APinDescription[pwmPinState[i].pin].ulPin);
+                }
+                else if (hpwm->Channel == PWM_CH4)
+                {
+                    __HAL_AFIO_REMAP_PWM4(g_APinDescription[pwmPinState[i].pin].pPort, g_APinDescription[pwmPinState[i].pin].ulPin);
+                }
+                break;
+            }
+        }
+    }
+}
+
+void HAL_PWM_MspDeInit(PWM_HandleTypeDef *hpwm)
+{
+    for (int i = 0; i < PWM_COUNT; i++)
+    {
+        if (hpwm->Channel == pwmPinState[i].hpwm.Channel) /*find channel num 0-4*/
+        {
+            if (g_pinStatus[pwmPinState[i].pin] == PIN_ATTR_PWM)
+            {
+                g_pinStatus[pwmPinState[i].pin] = PIN_ATTR_NONE;
+
+                __HAL_RCC_PWM_CLK_DISABLE();
+                HAL_GPIO_DeInit(g_APinDescription[pwmPinState[i].pin].pPort, g_APinDescription[pwmPinState[i].pin].ulPin);
+            }
+            break;
+        }
+    }
 }

@@ -160,6 +160,7 @@ uint8_t digitalRead(uint8_t pin);
 void analogReadResolution(uint8_t);
 int analogRead(uint8_t pin);
 
+void analogWrite(uint32_t pin, uint32_t val);
 //uint32_t millis(void);
 //uint32_t micros(void);
 //void delay(uint32_t ms);

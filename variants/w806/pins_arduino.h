@@ -25,8 +25,8 @@
 
 #include "variant.h"
 
-#define PIOA 0
-#define PIOB 1
+#define PIOA ((GPIO_TypeDef *)GPIOA_BASE)
+#define PIOB ((GPIO_TypeDef *)GPIOB_BASE)
 
 #define PA0 0
 #define PA1 1

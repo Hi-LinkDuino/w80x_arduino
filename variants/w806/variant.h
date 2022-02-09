@@ -4,7 +4,7 @@
 #include "./include/driver/wm_hal.h"
 #define PINS_COUNT          (42U)           /*number of pins on hilink demo board*/
 #define ADC_COUNT           (4U)            /*number of adc pins*/
-
+#define PWM_COUNT           (5U)            /*number of pwm pins*/
 
 
 /**
@@ -34,11 +34,11 @@ typedef enum _EAnalogChannel
 typedef enum _EPWMChannel
 {
     NOT_ON_PWM      =   -1,
-    PWM0_CH0        =   0,
-    PWM0_CH1        =   1,
-    PWM0_CH2        =   2,
-    PWM0_CH3        =   3,
-    PWM0_CH4        =   4,
+    PWM_CH0        =   0,
+    PWM_CH1        =   1,
+    PWM_CH2        =   2,
+    PWM_CH3        =   3,
+    PWM_CH4        =   4,
 } EPWMChannel ;
 
 /* Types used for the tables below */
@@ -51,7 +51,7 @@ typedef struct _PinDescription
   //uint32_t ulPinConfiguration ;                     
   uint32_t ulPinAttribute ;                         
   EAnalogChannel ulAnalogChannel ;          /* Analog pin in the Arduino context (label on the board) */
-  //EPWMChannel ulPWMChannel ;              /* PWM pin in the Arduino context (label on the board) */
+  EPWMChannel ulPWMChannel ;              /* PWM pin in the Arduino context (label on the board) */
   //ETCChannel ulTCChannel ;
 } PinDescription ;
 
