@@ -154,6 +154,10 @@ void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
 
 uint8_t digitalRead(uint8_t pin);
+  
+#define ADC8BIT 0xFF
+#define ADC16BIT 0xFFFF
+void analogReadResolution(uint8_t);
 int analogRead(uint8_t pin);
 
 //uint32_t millis(void);
