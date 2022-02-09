@@ -23,6 +23,11 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
+#include "variant.h"
+
+#define PIOA 0
+#define PIOB 1
+
 #define PA0 0
 #define PA1 1
 #define PA2 2
@@ -68,6 +73,10 @@
 #define PB25 41
 #define PB26 42
 
+#define A0 PA1
+#define A1 PA4
+#define A2 PA3
+#define A3 PA2
 //#define PA##n (n)
 //#define PB##n (16+n)
 
