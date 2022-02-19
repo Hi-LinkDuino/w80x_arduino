@@ -28,13 +28,14 @@
 #include "Arduino.h"
 #include "pins_arduino.h"
 #include "./include/driver/wm_gpio.h"
+#include "variant.h"
 
 void pinMode(uint8_t pin, uint8_t mode)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     GPIO_TypeDef *port = (pin > 15)? GPIOB:GPIOA;
     if (pin > 15) { pin -= 16; }
-
+    g_pinStatus[pin] = mode;
     GPIO_InitStruct.Pin = 1<<pin;
     switch (mode)
     {
@@ -60,16 +61,28 @@ void pinMode(uint8_t pin, uint8_t mode)
 
     HAL_GPIO_Init(port, &GPIO_InitStruct);
 }
-/*
-static void __turnOffPWM(uint8_t timer)
+extern void disable_pwm(uint8_t pin);
+static void __turnOffPWM(uint8_t pin)
 {
-
+    disable_pwm(pin);
 }
-*/
+
+extern void disable_adc(uint8_t pin);
+static void __turnOffADC(uint8_t pin)
+{
+    disable_adc(pin);
+}
+
 void digitalWrite(uint8_t pin, uint8_t val)
 {
     GPIO_TypeDef *port = (pin > 15)? GPIOB:GPIOA;
     if (pin > 15) { pin -= 16; }
+    if (g_pinStatus[pin] == PWM_OUT) {
+        __turnOffPWM(pin);
+    } else if (g_pinStatus[pin] == ANALOG_INPUT) {
+        __turnOffADC(pin);
+    }
+    g_pinStatus[pin] = OUTPUT_OD;
     HAL_GPIO_WritePin(port, 1 << pin, (GPIO_PinState)val);
     //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, (GPIO_PinState)val);
 }
@@ -78,6 +91,12 @@ uint8_t digitalRead(uint8_t pin)
 {
     GPIO_TypeDef *port = (pin > 15)? GPIOB:GPIOA;
     if (pin > 15) { pin -= 16; }
+    if (g_pinStatus[pin] == PWM_OUT) {
+        __turnOffPWM(pin);
+    } else if (g_pinStatus[pin] == ANALOG_INPUT) {
+        __turnOffADC(pin);
+    }
+    g_pinStatus[pin] = INPUT;
     return HAL_GPIO_ReadPin(port, 1<<pin);
 }
 
@@ -85,5 +104,11 @@ void digitalToggle(uint8_t pin)
 {
     GPIO_TypeDef *port = (pin > 15)? GPIOB:GPIOA;
     if (pin > 15) { pin -= 16; }
+    if (g_pinStatus[pin] == PWM_OUT) {
+        __turnOffPWM(pin);
+    } else if (g_pinStatus[pin] == ANALOG_INPUT) {
+        __turnOffADC(pin);
+    }
+    g_pinStatus[pin] = OUTPUT_OD;
     HAL_GPIO_TogglePin(port, 1<<pin);
 }

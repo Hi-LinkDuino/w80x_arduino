@@ -56,6 +56,8 @@ void yield(void);
 #define INPUT_PULLUP 0x2
 #define OUTPUT_OD 0x03
 #define INPUT_PULLDOWN 0x4
+#define ANALOG_INPUT 0x5
+#define PWM_OUT 0x6
 
 // undefine mathlib's pi if encountered
 #ifdef PI
@@ -154,7 +156,7 @@ void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
 
 uint8_t digitalRead(uint8_t pin);
-  
+
 #define ADC8BIT 0xFF
 #define ADC16BIT 0xFFFF
 void analogReadResolution(uint8_t);

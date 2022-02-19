@@ -41,5 +41,7 @@ void init()
 {
     HAL_Init();
     __HAL_RCC_GPIO_CLK_ENABLE();
+    __HAL_RCC_ADC_CLK_ENABLE();
+    __HAL_RCC_PWM_CLK_ENABLE();
 }
 
