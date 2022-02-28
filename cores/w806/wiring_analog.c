@@ -207,7 +207,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
             __HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_2);
         }
 #if (ADC_MODE == ADC_IT)
-        // 濡傛灉鐢ㄥ埌涓柇鏂瑰紡闇�瑕佷娇鑳戒腑鏂?
+        // 如果用到中断方式需要使能中断
         HAL_NVIC_SetPriority(ADC_IRQn, 0);
         HAL_NVIC_EnableIRQ(ADC_IRQn);
 #endif
@@ -224,7 +224,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef *hadc)
         {
             if (g_pinStatus[adcPinState[i].pin] == ANALOG_INPUT)
             {
-                g_pinStatus[adcPinState[i].pin] = PIN_ATTR_NONE;
+                g_pinStatus[adcPinState[i].pin] = PIN_IDLE;
                 HAL_GPIO_DeInit(GPIOA, adcPinState[i].pin);
                 break;
             }
@@ -288,7 +288,7 @@ void HAL_PWM_MspInit(PWM_HandleTypeDef *hpwm)
     {
         if (hpwm->Channel == pwmPinState[i].hpwm.Channel)
         {
-            if (g_pinStatus[pwmPinState[i].pin] == PIN_ATTR_PWM)
+            if (g_pinStatus[pwmPinState[i].pin] == PWM_OUT)
             {
                 if (hpwm->Channel == PWM_CH0)
                 {
@@ -322,9 +322,9 @@ void HAL_PWM_MspDeInit(PWM_HandleTypeDef *hpwm)
     {
         if (hpwm->Channel == pwmPinState[i].hpwm.Channel) /*find channel num 0-4*/
         {
-            if (g_pinStatus[pwmPinState[i].pin] == PIN_ATTR_PWM)
+            if (g_pinStatus[pwmPinState[i].pin] == PWM_OUT)
             {
-                g_pinStatus[pwmPinState[i].pin] = PIN_ATTR_NONE;
+                g_pinStatus[pwmPinState[i].pin] = PIN_IDLE;
 
                 __HAL_RCC_PWM_CLK_DISABLE();
                 HAL_GPIO_DeInit(g_APinDescription[pwmPinState[i].pin].pPort, g_APinDescription[pwmPinState[i].pin].ulPin);

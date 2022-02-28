@@ -59,6 +59,8 @@ void yield(void);
 #define ANALOG_INPUT 0x5
 #define PWM_OUT 0x6
 
+#define PIN_IDLE 0xff
+
 // undefine mathlib's pi if encountered
 #ifdef PI
 #undef PI
