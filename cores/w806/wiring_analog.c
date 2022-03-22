@@ -109,16 +109,17 @@ int analogRead(uint8_t pin) /*all ADC channel range is 0-2.4V*/
 
         val = ADC->DR;
         val = val - ADC_DEFAULT_OFFSET;
-        if ((val < 0) || (val > ADC_MAX_VAL))
+
+        if (adcResolution == ADC8BIT)
         {
-            val = 0;
+            val = (val) ? (val * 256 / 76000) : 0;
         }
+
 #endif
     }
 
-    return val & adcResolution;
+    return val;
 }
-
 
 void disable_adc(uint8_t pin) /*disable pin's ADC channel function*/
 {
