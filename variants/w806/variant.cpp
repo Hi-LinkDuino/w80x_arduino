@@ -12,8 +12,8 @@ uint8_t g_pinStatus[PINS_COUNT] = {0};
 */
 
 const PinDescription g_APinDescription[] = {
-    { PIOA, GPIO_PIN_0,          PIN_ATTR_DIGITAL|PIN_ATTR_ANALOG|PIN_ATTR_PWM,           ADC_Channel1,      NOT_ON_PWM},
-    { PIOA, GPIO_PIN_1,          PIN_ATTR_DIGITAL|PIN_ATTR_ANALOG|PIN_ATTR_PWM,           No_ADC_Channel,    NOT_ON_PWM},
+    { PIOA, GPIO_PIN_0,          PIN_ATTR_DIGITAL|PIN_ATTR_ANALOG|PIN_ATTR_PWM,           No_ADC_Channel,      NOT_ON_PWM},
+    { PIOA, GPIO_PIN_1,          PIN_ATTR_DIGITAL|PIN_ATTR_ANALOG|PIN_ATTR_PWM,           ADC_Channel1,    NOT_ON_PWM},
     { PIOA, GPIO_PIN_2,          PIN_ATTR_DIGITAL|PIN_ATTR_ANALOG|PIN_ATTR_PWM,           ADC_Channel4,      NOT_ON_PWM},
     { PIOA, GPIO_PIN_3,          PIN_ATTR_DIGITAL|PIN_ATTR_ANALOG|PIN_ATTR_PWM,           ADC_Channel3,      NOT_ON_PWM},
     { PIOA, GPIO_PIN_4,          PIN_ATTR_DIGITAL|PIN_ATTR_ANALOG|PIN_ATTR_PWM,           ADC_Channel2,      NOT_ON_PWM},
