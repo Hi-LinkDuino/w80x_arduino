@@ -30,7 +30,6 @@
 #include "pins_arduino.h"
 #include "./include/driver/wm_hal.h"
 
-
 #ifdef __cplusplus 
 extern "C" {
 #endif
@@ -159,9 +158,8 @@ void digitalWrite(uint8_t pin, uint8_t val);
 
 uint8_t digitalRead(uint8_t pin);
 
-#define ADC8BIT		0x01
-#define ADC16BIT	0x02
-
+#define ADC8BIT 0xFF
+#define ADC16BIT 0xFFFF
 void analogReadResolution(uint8_t);
 int analogRead(uint8_t pin);
 

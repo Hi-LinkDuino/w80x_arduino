@@ -217,11 +217,11 @@ HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, ui
 HAL_StatusTypeDef HAL_UART_Transmit_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
 
 /**
-  * ÒÔÖÐ¶Ï·½Ê½½ÓÊÕÒ»¶¨³¤¶ÈµÄÊý¾Ý.
-  * ×¢Òâ£ºpDataÖ¸ÏòµÄµØÖ·£¬¿Õ¼ä³¤¶È±ØÐë´óÓÚµÈÓÚ32×Ö½Ú
-  * 	  Size´óÓÚ0£¬Ôò½ÓÊÕ¹»Size³¤¶ÈµÄÊý¾ÝÖ´ÐÐÒ»´ÎHAL_UART_RxCpltCallback(huart);
-  * 	  SizedµÈÓÚ0£¬Ôò½ÓÊÕ²»¶¨³¤µÄÊý¾Ý¾ÍÖ´ÐÐÒ»´ÎHAL_UART_RxCpltCallback(huart);
-  *       Á½ÖÖÇé¿öÏÂ£¬Êý¾Ý¶¼´æ·ÅÔÚhuart->pRxBuffPtr»òÕßpDataÖÐ£¬Êý¾Ý³¤¶È´æ·ÅÔÚhuart->RxXferCountÖÐ
+  * ä»¥ä¸­æ–­æ–¹å¼æŽ¥æ”¶ä¸€å®šé•¿åº¦çš„æ•°æ®.
+  * æ³¨æ„ï¼špDataæŒ‡å‘çš„åœ°å€ï¼Œç©ºé—´é•¿åº¦å¿…é¡»å¤§äºŽç­‰äºŽ32å­—èŠ‚
+  * 	  Sizeå¤§äºŽ0ï¼Œåˆ™æŽ¥æ”¶å¤ŸSizeé•¿åº¦çš„æ•°æ®æ‰§è¡Œä¸€æ¬¡HAL_UART_RxCpltCallback(huart);
+  * 	  Sizedç­‰äºŽ0ï¼Œåˆ™æŽ¥æ”¶ä¸å®šé•¿çš„æ•°æ®å°±æ‰§è¡Œä¸€æ¬¡HAL_UART_RxCpltCallback(huart);
+  *       ä¸¤ç§æƒ…å†µä¸‹ï¼Œæ•°æ®éƒ½å­˜æ”¾åœ¨huart->pRxBuffPtræˆ–è€…pDataä¸­ï¼Œæ•°æ®é•¿åº¦å­˜æ”¾åœ¨huart->RxXferCountä¸­
   */
 HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
 
