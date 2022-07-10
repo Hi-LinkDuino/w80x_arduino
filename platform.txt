@@ -41,7 +41,7 @@ compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,
 
 compiler.elf2bin.flags=-O binary
 compiler.elf2bin.cmd=csky-elfabiv2-objcopy
-compiler.ldflags=-lm -Wl,-T{build.core.path}/ld/gcc_csky.ld
+compiler.ldflags=-lsupc++ -lm -Wl,-T{build.core.path}/ld/gcc_csky.ld
 compiler.size.cmd=csky-elfabiv2-size
 
 # This can be overridden in boards.txt
