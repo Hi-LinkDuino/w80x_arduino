@@ -77,6 +77,19 @@
 #define A1 PA4
 #define A2 PA3
 #define A3 PA2
+
+/*HSPI default port & pin define*/
+#define SS    PB4
+// #define MOSI  PB5
+// #define MISO  PB3
+// #define SCK   PB2
+
+
+// #define SPI_CS_DEF_PIN (PB4)
+// #define SPI_CLK_DEF_PIN (PB2)
+// #define SPI_MISO_DEF_PIN (PB3)
+// #define SPI_MOSI_DEF_PIN (PB5)
+
 //#define PA##n (n)
 //#define PB##n (16+n)
 

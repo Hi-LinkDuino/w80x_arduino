@@ -18,7 +18,7 @@
 #include "wm_adc.h"
 #include "wm_pwm.h"
 #include "wm_pmu.h"
-#include "wm_spi_flash.h"
+//#include "wm_spi_flash.h"
 #include "wm_i2c.h"
 #include "wm_touch.h"
 #include "wm_lcd.h"

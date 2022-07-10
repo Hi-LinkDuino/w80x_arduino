@@ -1,5 +1,5 @@
 #include "wm_spi_flash.h"
-
+#if 0
 static SPI_HandleTypeDef hspi;
 static uint32_t total_size = 0;
 static uint8_t cache[SECTOR_SIZE];
@@ -438,3 +438,5 @@ int SPIFLS_Chip_Erase(void)
 	
 	return HAL_OK;
 }
+
+#endif

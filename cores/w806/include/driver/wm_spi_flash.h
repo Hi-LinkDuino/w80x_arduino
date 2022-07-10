@@ -1,6 +1,6 @@
 #ifndef __WM_SPI_FLASH_H__
 #define __WM_SPI_FLASH_H__
-
+#if 0
 #include "wm_hal.h"
 #ifdef __cplusplus
 extern "C" {
@@ -36,5 +36,5 @@ int SPIFLS_Chip_Erase(void);
 #ifdef __cplusplus
 }
 #endif
-
+#endif
 #endif

@@ -29,6 +29,8 @@
 #include <stdio.h>
 #include "pins_arduino.h"
 #include "./include/driver/wm_hal.h"
+//#include "SPI.h"
+#include "../../libraries/SPI/src/SPI.h"
 
 
 #ifdef __cplusplus 
@@ -182,6 +184,9 @@ void delayMicroseconds(uint32_t us);
 
 //void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), __xdata uint8_t mode);
 //void detachInterrupt(uint8_t interruptNum);
+
+// extern void arduino_pin_2_gpio(uint8_t pin, GPIO_TypeDef *port, uint32_t *gpio);
+void arduino_pin_2_gpio(uint8_t pin, GPIO_TypeDef **port, uint32_t *gpio);
 
 void setup(void);
 void loop(void);
