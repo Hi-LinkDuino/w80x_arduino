@@ -30,6 +30,43 @@
 #include "./include/driver/wm_gpio.h"
 #include "variant.h"
 
+void arduino_pin_2_gpio(uint8_t pin, GPIO_TypeDef **port, uint32_t *gpio)
+{
+
+    uint32_t a = 0;
+   *port =  g_APinDescription[pin].pPort;
+
+
+   a = g_APinDescription[pin].ulPin;
+    *gpio  = g_APinDescription[pin].ulPin;
+
+}
+
+uint8_t gpio2_arduino_pin(GPIO_TypeDef *port, uint32_t gpio)
+{
+    uint8_t pin_offect =  (port == GPIOA)? 0:15;
+    uint8_t pin_index = 0;
+
+    for(pin_index = 0; pin_index < 32; pin_index++)
+    {
+        if(bitRead(gpio, pin_index))
+        {
+            break;
+        }
+    }
+    
+    if(pin_index < 32)
+    {
+        return pin_offect+pin_index;
+    }
+    else
+    {
+        return 0xff;
+    }
+
+}
+
+
 void pinMode(uint8_t pin, uint8_t mode)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
