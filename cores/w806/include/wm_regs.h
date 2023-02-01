@@ -12,7 +12,7 @@
 
 
 #include <stdint.h>
-#include "arch/xt804/csi_core/core_804.h"
+#include "arch/XT804/csi_core/core_804.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
