@@ -92,6 +92,12 @@
                             "host": "i686-mingw32",
                             "url": "https://github.com/Hi-LinkDuino/w80x_arduino/releases/download/v0.0.1/w80x_tool-mingw32-v1.0.zip",
                             "archiveFileName": "w80x_tool-mingw32-v1.0.zip"
+                        },
+                        {
+                            "host": "x86_64-pc-linux-gnu",
+                            "url": "https://github.com/Hi-LinkDuino/w80x_arduino/releases/download/v0.0.1/w80x_tool-mingw32-v1.0.zip",
+                            "archiveFileName": "w80x_tool-mingw32-v1.0.zip"
+                            
                         }
                     ]
                 }

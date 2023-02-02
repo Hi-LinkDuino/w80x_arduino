@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <arduino.h>
+#include <Arduino.h>
 #include "wm_hal.h"
 
 void Error_Handler(void);
