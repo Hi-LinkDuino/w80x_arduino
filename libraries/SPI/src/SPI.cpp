@@ -41,7 +41,7 @@ void SPIClass::begin()
         }
     }
     initialized++; // reference count
-
+    interrupts();
 }
 
 void SPIClass::end() {
@@ -54,6 +54,7 @@ void SPIClass::end() {
     __HAL_RCC_SPI_CLK_DISABLE();
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5);
   }
+  interrupts();
 }
 
 void SPIClass::usingInterrupt(uint8_t interruptNumber)
