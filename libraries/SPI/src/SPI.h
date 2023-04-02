@@ -16,6 +16,14 @@
 
 #include <Arduino.h>
 
+#ifndef SPI_FCLK
+#define SPI_FCLK 40000000
+#endif
+#undef SPI
+#define SPI_HAL ((SPI_TypeDef *)SPI_BASE)
+#define cli() __disable_irq()//Can only be executed in Privileged nodes
+#define sei() __enable_irq()
+
 // SPI_HAS_TRANSACTION means SPI has beginTransaction(), endTransaction(),
 // usingInterrupt(), and SPISetting(clock, bitOrder, dataMode)
 #define SPI_HAS_TRANSACTION 1
